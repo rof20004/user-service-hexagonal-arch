@@ -62,7 +62,7 @@ func (dto CreateUserDto) ToDomain() User {
 	}
 }
 
-// FromDomain converts User domain into ViewUserDto
+// FromDomain build ViewUserDto from User domain data
 func (dto ViewUserDto) FromDomain(user User) ViewUserDto {
 	return ViewUserDto{
 		ID:    user.ID,
@@ -71,6 +71,7 @@ func (dto ViewUserDto) FromDomain(user User) ViewUserDto {
 	}
 }
 
+// ToViewUserDto converts User domain into ViewUserDto
 func (u User) ToViewUserDto() ViewUserDto {
 	return ViewUserDto{
 		ID:    u.ID,

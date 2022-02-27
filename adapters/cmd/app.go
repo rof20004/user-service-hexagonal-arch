@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	userRepository "user-service/adapters/database/memory"
+	userRepository "user-service/adapters/database/memory/user"
 	userApp "user-service/application/user"
 	userPort "user-service/ports/user"
 )

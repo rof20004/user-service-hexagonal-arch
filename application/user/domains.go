@@ -23,16 +23,16 @@ type User struct {
 
 // CreateUserDto create user request data
 type CreateUserDto struct {
-	Name     string
-	Email    string
-	Password string
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 // ViewUserDto user data to send to clients
 type ViewUserDto struct {
-	ID    string
-	Name  string
-	Email string
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 // Validate check create user data request

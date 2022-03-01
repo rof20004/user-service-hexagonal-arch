@@ -44,3 +44,24 @@ func (s Service) GetById(id string) (userApp.ViewUserDto, error) {
 
 	return user.ToViewUserDto(), nil
 }
+
+func (s Service) Update(id string, dto userApp.UpdateUserDto) (userApp.ViewUserDto, error) {
+	var view userApp.ViewUserDto
+
+	if err := dto.Validate(); err != nil {
+		return view, err
+	}
+
+	user, err := s.repo.FindById(id)
+	if err != nil {
+		return view, err
+	}
+
+	dto.ApplyNewValues(&user)
+
+	if err := s.repo.Update(user); err != nil {
+		return view, err
+	}
+
+	return view.FromDomain(user), err
+}

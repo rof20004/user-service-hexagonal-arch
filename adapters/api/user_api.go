@@ -24,6 +24,7 @@ func main() {
 
 	app.Post("/users", saveUser(userSv))
 	app.Get("/users/:id", getUser(userSv))
+	app.Put("/users/:id", updateUser(userSv))
 
 	log.Fatal(app.Listen(":8080"))
 }
@@ -52,6 +53,27 @@ func getUser(service userPort.Service) fiber.Handler {
 		}
 
 		result, err := service.GetById(id)
+		if err != nil {
+			return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+		}
+
+		return c.Status(fiber.StatusOK).JSON(&result)
+	}
+}
+
+func updateUser(service userPort.Service) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		var id = c.Params("id")
+		if id == "" {
+			return c.Status(fiber.StatusBadRequest).SendString(messageUserIdRequired)
+		}
+
+		var dto userApp.UpdateUserDto
+		if err := c.BodyParser(&dto); err != nil {
+			return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+		}
+
+		result, err := service.Update(id, dto)
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 		}

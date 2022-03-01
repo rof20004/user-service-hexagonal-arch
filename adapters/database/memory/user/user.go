@@ -31,3 +31,8 @@ func (umdb *MemoryDatabase) FindById(id string) (userApp.User, error) {
 
 	return user, nil
 }
+
+func (umdb *MemoryDatabase) Update(user userApp.User) error {
+	umdb.store[user.ID] = user
+	return nil
+}

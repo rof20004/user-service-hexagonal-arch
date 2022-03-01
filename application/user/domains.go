@@ -35,6 +35,11 @@ type ViewUserDto struct {
 	Email string `json:"email"`
 }
 
+// UpdateUserDto update user request data
+type UpdateUserDto struct {
+	Name string `json:"name"`
+}
+
 // Validate check create user data request
 func (dto CreateUserDto) Validate() error {
 	if strings.TrimSpace(dto.Name) == "" {
@@ -52,6 +57,15 @@ func (dto CreateUserDto) Validate() error {
 	return nil
 }
 
+// Validate check update user data request
+func (dto UpdateUserDto) Validate() error {
+	if strings.TrimSpace(dto.Name) == "" {
+		return errorNameRequired
+	}
+
+	return nil
+}
+
 // ToDomain converts CreateUserDto into User domain
 func (dto CreateUserDto) ToDomain() User {
 	return User{
@@ -60,6 +74,11 @@ func (dto CreateUserDto) ToDomain() User {
 		Email:    dto.Email,
 		Password: dto.Password,
 	}
+}
+
+// ApplyNewValues populate User domain with UpdateUserDto values
+func (dto UpdateUserDto) ApplyNewValues(loadedUser *User) {
+	loadedUser.Name = dto.Name
 }
 
 // FromDomain build ViewUserDto from User domain data

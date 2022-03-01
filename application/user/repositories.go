@@ -7,4 +7,7 @@ type Repository interface {
 
 	// FindById load a user from database
 	FindById(id string) (User, error)
+
+	// Update saves new user data into the database
+	Update(user User) error
 }

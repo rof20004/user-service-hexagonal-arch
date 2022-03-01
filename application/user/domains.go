@@ -2,9 +2,8 @@ package user
 
 import (
 	"errors"
-	"strings"
-
 	"github.com/google/uuid"
+	"strings"
 )
 
 var (
@@ -40,6 +39,28 @@ type UpdateUserDto struct {
 	Name string `json:"name"`
 }
 
+// SetValuesFromCreateUserDto converts CreateUserDto into User domain
+func (u *User) SetValuesFromCreateUserDto(dto CreateUserDto) {
+	u.ID = uuid.NewString()
+	u.Name = dto.Name
+	u.Email = dto.Email
+	u.Password = dto.Password
+}
+
+// SetValuesFromUpdateUserDto populate User domain from UpdateUserDto values
+func (u *User) SetValuesFromUpdateUserDto(dto UpdateUserDto) {
+	u.Name = dto.Name
+}
+
+// ToViewUserDto build ViewUserDto from User domain data
+func (u *User) ToViewUserDto() ViewUserDto {
+	return ViewUserDto{
+		ID:    u.ID,
+		Name:  u.Name,
+		Email: u.Email,
+	}
+}
+
 // Validate check create user data request
 func (dto CreateUserDto) Validate() error {
 	if strings.TrimSpace(dto.Name) == "" {
@@ -64,37 +85,4 @@ func (dto UpdateUserDto) Validate() error {
 	}
 
 	return nil
-}
-
-// ToDomain converts CreateUserDto into User domain
-func (dto CreateUserDto) ToDomain() User {
-	return User{
-		ID:       uuid.NewString(),
-		Name:     dto.Name,
-		Email:    dto.Email,
-		Password: dto.Password,
-	}
-}
-
-// ApplyNewValues populate User domain with UpdateUserDto values
-func (dto UpdateUserDto) ApplyNewValues(loadedUser *User) {
-	loadedUser.Name = dto.Name
-}
-
-// FromDomain build ViewUserDto from User domain data
-func (dto ViewUserDto) FromDomain(user User) ViewUserDto {
-	return ViewUserDto{
-		ID:    user.ID,
-		Name:  user.Name,
-		Email: user.Email,
-	}
-}
-
-// ToViewUserDto converts User domain into ViewUserDto
-func (u User) ToViewUserDto() ViewUserDto {
-	return ViewUserDto{
-		ID:    u.ID,
-		Name:  u.Name,
-		Email: u.Email,
-	}
 }

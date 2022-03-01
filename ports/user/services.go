@@ -20,48 +20,45 @@ func NewUserService(r userApp.Repository) Service {
 }
 
 func (s Service) Create(dto userApp.CreateUserDto) (userApp.ViewUserDto, error) {
-	var view userApp.ViewUserDto
-
 	if err := dto.Validate(); err != nil {
-		return view, err
+		return userApp.ViewUserDto{}, err
 	}
 
-	var user = dto.ToDomain()
+	var user userApp.User
+	user.SetValuesFromCreateUserDto(dto)
 
 	if err := s.repo.Save(user); err != nil {
 		log.Println(err)
-		return view, errorSavingUser
+		return userApp.ViewUserDto{}, errorSavingUser
 	}
 
-	return view.FromDomain(user), nil
+	return user.ToViewUserDto(), nil
 }
 
 func (s Service) GetById(id string) (userApp.ViewUserDto, error) {
 	user, err := s.repo.FindById(id)
 	if err != nil {
-		return user.ToViewUserDto(), err
+		return userApp.ViewUserDto{}, err
 	}
 
 	return user.ToViewUserDto(), nil
 }
 
 func (s Service) Update(id string, dto userApp.UpdateUserDto) (userApp.ViewUserDto, error) {
-	var view userApp.ViewUserDto
-
 	if err := dto.Validate(); err != nil {
-		return view, err
+		return userApp.ViewUserDto{}, err
 	}
 
 	user, err := s.repo.FindById(id)
 	if err != nil {
-		return view, err
+		return userApp.ViewUserDto{}, err
 	}
 
-	dto.ApplyNewValues(&user)
+	user.SetValuesFromUpdateUserDto(dto)
 
 	if err := s.repo.Update(user); err != nil {
-		return view, err
+		return userApp.ViewUserDto{}, err
 	}
 
-	return view.FromDomain(user), err
+	return user.ToViewUserDto(), err
 }

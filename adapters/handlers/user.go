@@ -7,7 +7,7 @@ import (
 )
 
 type HttpHandler struct {
-	userService ports.Usecase
+	userUsecases ports.Usecase
 }
 
 func NewHttpHandler(userService ports.Usecase) *HttpHandler {
@@ -20,7 +20,7 @@ func (handler *HttpHandler) Create(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
 
-	user, err := handler.userService.Create(dto.Name, dto.Email, dto.Password)
+	user, err := handler.userUsecases.Create(dto.Name, dto.Email, dto.Password)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
@@ -37,7 +37,7 @@ func (handler *HttpHandler) Create(c *fiber.Ctx) error {
 func (handler *HttpHandler) GetById(c *fiber.Ctx) error {
 	id := c.Params("id")
 
-	user, err := handler.userService.GetById(id)
+	user, err := handler.userUsecases.GetById(id)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}

@@ -5,7 +5,7 @@ import (
 
 	userRepository "user-service/adapters/database/memory/user"
 	userHandler "user-service/adapters/handlers"
-	userService "user-service/application/services"
+	userService "user-service/services"
 
 	"github.com/gofiber/fiber/v2"
 )

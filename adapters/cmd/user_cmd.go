@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"log"
+	userService "user-service/services"
 
 	userRepository "user-service/adapters/database/memory/user"
-	userService "user-service/application/services"
 )
 
 func main() {

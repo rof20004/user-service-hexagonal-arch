@@ -2,12 +2,11 @@ package main
 
 import (
 	"log"
-
-	userRepository "user-service/adapters/database/memory/user"
-	userHandler "user-service/adapters/handlers"
-	userService "user-service/services"
+	userService "user-service/application/services"
 
 	"github.com/gofiber/fiber/v2"
+	userRepository "user-service/adapters/database/memory/user"
+	userHandler "user-service/adapters/handlers"
 )
 
 func main() {
